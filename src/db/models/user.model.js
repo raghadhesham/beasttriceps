@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { GenderEnum } from "../../common/utils/enums/user.enum.js";
 
-export const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
     trim: true,
@@ -19,27 +19,22 @@ export const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
+    lowercase: true,
+    trim: true,
   },
   password: {
-    type: string,
+    type: String,
     required: true,
-  },
-  confirmPassword: {
-    type: string,
-    required: true,
-    validate: {
-      validator: function (value) {
-        return value === this.password;
-      },
-      message: "Passwords don't match :(",
-    },
   },
   DOB: {
     type: Date,
     required: true,
-    },
+  },
   gender: {
-      type: String,
-      enum: [GenderEnum.female, GenderEnum.male],
-    },
+    type: Number,
+    enum: Object.values(GenderEnum),
+  },
 });
+
+export const User = mongoose.model("User", userSchema);
